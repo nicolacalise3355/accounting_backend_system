@@ -2,4 +2,4 @@
 
 require_once "../config/connection.php";
 
-echo $conn;
+echo "info";
