@@ -1,8 +1,7 @@
 
-# Fault management system
+# Accounting management system
 
-The project involves a backend software for managing faults in the company's locations. Each room contains machinery that may malfunction; it is important to keep track of these faults and the operators performing maintenance work.
-
+The project involves a backend software for managing the accounting in a company. Usefull to keep track of incomes and costs.
 
 ## Tech Stack and Pattern
 
@@ -14,7 +13,7 @@ The project involves a backend software for managing faults in the company's loc
 
 ## Implementations and usage
 
-- To take the jwt token you need to send a POST request to the /auth API, it simulates a login, but you don't really need credentials.
+- To take the jwt token you need to send a POST request to the /auth API, and do the login.
 - You can Add, Remove or Update some entities of the system.
 - You can use some APIs to get specific metrics of the system.
 
