@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $psw_get = $row['password'];
             if($psw == $psw_get){
                 $headers = array('alg'=>'HS256','typ'=>'JWT');
-                $payload = array('username'=>$username, 'exp'=>(time() + 60));
+                $payload = array('username'=>$username, 'exp'=>(time() + 500));
         
                 $jwt = generate_jwt($headers, $payload);
                 

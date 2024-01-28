@@ -9,6 +9,11 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, PUT");
 
 $bearer_token = get_bearer_token();
+if(!$bearer_token) {
+    http_response_code(401);
+    echo json_encode(array('error' => 'No Authorization'));
+    die();
+}
 $is_jwt_valid = is_jwt_valid($bearer_token);
 
 if(!$is_jwt_valid){
@@ -17,37 +22,42 @@ if(!$is_jwt_valid){
     die();
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-	$data = json_decode(file_get_contents("php://input", true));
-	
-    $username = $data->username;
-    $psw = $data->password;
-    //TO MODIFY
-	$sql = get_login_query($username);
+$data = json_decode(file_get_contents("php://input", true));
 
+if(
+    !isset($data->date) ||  
+    !isset($data->revenue) ||
+    !isset($data->costs)
+  ){
+    http_response_code(400);
+    echo json_encode(array('error' => 'Missing Data'));
+    die();
+  }
+	
+$date = $data->date;
+$revenue = $data->revenue;
+$costs = $data->costs;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+	$sql = get_insert_workday_query($date, $revenue, $costs);
     $result = $conn->query($sql);
 
-    if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
-            $psw_get = $row['password'];
-            if($psw == $psw_get){
-                $headers = array('alg'=>'HS256','typ'=>'JWT');
-                $payload = array('username'=>$username, 'exp'=>(time() + 60));
-        
-                $jwt = generate_jwt($headers, $payload);
-                
-                echo json_encode(array('token' => $jwt));
-            }else{
-                http_response_code(400);
-                echo json_encode(array('error' => 'Invalid Password'));
-            }
-        }
+    if ($result) {
+        echo json_encode(array('response' => true));
     } else {
         http_response_code(400);
-        echo json_encode(array('error' => 'Invalid User'));
+        echo json_encode(array('error' => 'Invalid Data'));
     }
 }else if ($_SERVER['REQUEST_METHOD'] === 'PUT'){
+	$sql = get_modify_workday_query($date, $revenue, $costs);
+    $result = $conn->query($sql);
 
+    if ($result) {
+        echo json_encode(array('response' => true));
+    } else {
+        http_response_code(400);
+        echo json_encode(array('error' => 'Invalid Data'));
+    }
 }else{
     http_response_code(400);
     echo json_encode(array('error' => 'Method not allowed'));

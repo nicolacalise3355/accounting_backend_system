@@ -8,7 +8,7 @@ class Workday {
 
   function __construct($id, $date, $revenue, $costs) {
     $this->id = $id;
-    $this->date = $date;
+    $this->date = $date; //AAAA-DD-MM
     $this->revenue = $revenue;
     $this->costs = $costs;
   }
