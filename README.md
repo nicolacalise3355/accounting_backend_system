@@ -6,7 +6,8 @@ The project involves a backend software for managing the accounting in a company
 ### Steps of development
 
 - Workdays implementation (v.1.0): to keep track of the cash flow.
-- Members implementation (v. 1.1): to keep track of the clients 
+- W. Statistics implementation (v.1.1): Statistics about workdays.
+- Members implementation (v. 1.2): to keep track of the clients 
 
 ## Tech Stack and Pattern
 
