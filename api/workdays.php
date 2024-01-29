@@ -9,12 +9,40 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET");
 
 $bearer_token = get_bearer_token();
+if(!$bearer_token) {
+    http_response_code(401);
+    echo json_encode(array('error' => 'No Authorization'));
+    die();
+}
 $is_jwt_valid = is_jwt_valid($bearer_token);
 
 if(!$is_jwt_valid){
     http_response_code(401);
     echo json_encode(array('error' => 'Invalid Token'));
     die();
+}
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    
+    $sql = get_all_workdays();
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        $list_workdays = [];
+        while($row = $result->fetch_assoc()) {
+            $list_workdays[] = $row;
+        }
+        echo json_encode(array(
+            'response' => true,
+            'workdays' => $list_workdays
+        ));
+    } else {
+        echo json_encode(array(
+            'response' => true,
+            'workdays' => []
+        ));
+    }
+}else{
+    http_response_code(400);
+    echo json_encode(array('error' => 'Method not allowed'));
 }
 
 ?>
