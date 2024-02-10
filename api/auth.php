@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {
             $psw_get = $row['password'];
-            if($psw == $psw_get){
+            if($psw == $psw_get){ //In production, change this and use a encryption algorithm as CRYPT_BLOWFISH 
                 $headers = array('alg'=>'HS256','typ'=>'JWT');
                 $payload = array('username'=>$username, 'exp'=>(time() + 500));
         
