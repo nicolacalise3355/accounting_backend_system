@@ -3,10 +3,15 @@
 
 require_once '../config/connection.php';
 require_once '../utils/jwt_utils.php';
+require_once '../utils/utility.php';
 require_once '../queries/workday_queries.php';
 
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Credentials: true");
+header("Access-Control-Allow-Methods: POST, OPTIONS, PATCH");
+header("Access-Control-Allow-Headers: Origin, X-Api-Key, X-Requested-With, Content-Type, Accept, Authorization");
+
+check_header();
 
 $bearer_token = get_bearer_token();
 if(!$bearer_token) {
